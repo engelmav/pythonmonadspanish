@@ -85,4 +85,27 @@ def sqrt(x):
 
 Así que hay tres casos que tenemos que considerar. Si ``x`` es positivo, devolvemos sus raices cuadradas. Si ``x`` es ``0``, devolvemos ``[0]``. Si ``x`` es negativo, devolvemos una lista vacía.
 
+¡Excelente! Nuestra función ``sqrt``  ahora tiene más sentido matemáticamente, por lo menos para los números reales. Pero tenemos el mismo problema como en Ejemplo 1 -- ya no se puede componer. No podemos simplemente computar ``sqrt(sqrt(x))``, porque la llamada interior de ``sqrt`` devuelve una lista, y la llada exterior espera un número. Como antes, necesitamos definir una función ``vins`` para ayudarnos con la composición.
 
+```python
+def bind(x, f): 
+  return [j for i in x for j in f(i)]
+```
+
+Aquí, ``bind`` toma una lista de números ``x`` y una función ``f``. La comprehensión de listas de dos iteraciones se ve críptico -- lo puedes pensar así: Aplicamos ``f`` a cada valor en ``x``, lo cual nos da una lista de listas. Después aplanamos el resultado en una sola lista y la devolvemos. Ahora podemos computar las raices cuadradas de una lista de números, y después computar todas las raices cuadradas de los resultados:
+
+```python
+>>> bind(bind([5, 0, 3], sqrt), sqrt) 
+[1.4953487812212205, -1.4953487812212205, 0, 1.3160740129524924, -1.3160740129524924]
+```
+
+Funciona! Pero nuestra meta original fue encontrar las raices cuadradas de *un* número. Podríamos siempre escribir ``bind)[x], sqrt) donde ``x`` es un número, pero quizás sería mejor utilizar una función para abstraer la representación de nuestro parámetro. Digamosle a esta función ``unit``:
+
+```python
+def unit(x):
+  return [x]
+```
+
+Sip, esto simplemente pone un valor dentro de una lista. Puede que no se vea justificado ahora, pero escribiremos una versión más útil en el próximo ejemplo. Ahora no tenemos que meter nuestro parámetr
+
+Excelente, ahora podemos inteligentemente componer las funciones
