@@ -52,4 +52,37 @@ def composable_sqrt(x):
         return x**0.5
 ```
 
+Ahora podemos evaluar expresiones tales como ``composable_sqrt(composable_divide100(composable_sqrt(x)))``. Cuando x ``x <= 0``, la expresión entera evalua a None, como se esperaría.
+
+En vez de modificar todas nuestras funciones para ver si existe ``None``, escribamos un función que envuelve a otras funciones (digamosle ``bind``) para hacer el manejo de errores para nosotros. Esta función acepta un parámetro (o un número o ``None``) y una función (tal como ``divide100`` o ``sqrt``) y aplica la función a ese parámetro. Si el parámetro es ``None``, nos saltamos la aplicación de la función y sólo devolvemos ``None``:
+
+```python
+def bind(x, f):
+    if x is None:
+        return None
+    else:
+        return f(x)
+
+
+Ahora podemos componer estas funciones, como: ``bind(bind(bind(x, sqrt), divide100), sqrt)``
+
+¡Genial! Ahora tenemos una manera de componer funciones numericales que puedan fallar. Acabas de imple,emtar el monad de ``Maybe`` de Haskell, lo cual es una forma simple del manejo de excepciones. Intentemos algunos ejemplos más complejos.
+
+
+## Ejemplo 2: operaciones en vectores (alias "Lista")
+
+Sabemos que. matemáticamente, números positivos tienen dos raices. Modifiquemos ``sqrt``para que devuelva una lista de valores:
+
+```python
+def sqrt(x):
+    if x < 0:
+        return []
+    elif x == 0:
+        return [0]
+    else:
+  return [x**0.5, -x**0.5]
+```
+
+Así que hay tres casos que tenemos que considerar. Si ``x`` es positivo, devolvemos sus raices cuadradas. Si ``x`` es ``0``, devolvemos ``[0]``. Si ``x`` es negativo, devolvemos una lista vacía.
+
 
