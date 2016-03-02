@@ -62,7 +62,7 @@ def bind(x, f):
         return None
     else:
         return f(x)
-
+```
 
 Ahora podemos componer estas funciones, como: ``bind(bind(bind(x, sqrt), divide100), sqrt)``
 
