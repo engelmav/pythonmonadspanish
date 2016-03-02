@@ -24,6 +24,7 @@ def sqrt(x):
         return None
     else:
         return x ** 0.5
+```
 
 Podemos componer estas funciones? Qué pasa si quisieramos computar algo como ``sqrt(divide100(sqrt(x)))``? Eso funcionaría, con tal que ``x`` sea positivo. Si acomodamos explícitamente los casos en que cualquier de esas funciones devuelva ``None``, el código se alarga(7) mucho:
 
