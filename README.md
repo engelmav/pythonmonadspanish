@@ -69,7 +69,7 @@ Ahora podemos componer estas funciones, como: ``bind(bind(bind(x, sqrt), divide1
 ¡Genial! Ahora tenemos una manera de componer funciones numericales que puedan fallar. Acabas de imple,emtar el monad de ``Maybe`` de Haskell, lo cual es una forma simple del manejo de excepciones. Intentemos algunos ejemplos más complejos.
 
 
-## Ejemplo 2: operaciones en vectores (alias "Lista")
+## Ejemplo 2: operaciones en vectores (alias "Lista" / "List")
 
 Sabemos que. matemáticamente, números positivos tienen dos raices. Modifiquemos ``sqrt``para que devuelva una lista de valores:
 
@@ -106,6 +106,41 @@ def unit(x):
   return [x]
 ```
 
-Sip, esto simplemente pone un valor dentro de una lista. Puede que no se vea justificado ahora, pero escribiremos una versión más útil en el próximo ejemplo. Ahora no tenemos que meter nuestro parámetr
+Sip, esto simplemente pone un valor dentro de una lista. Puede que no se vea justificado ahora, pero escribiremos una versión más útil en el próximo ejemplo. Ahora no tenemos que meter nuestro parámetro dentro de una lista -- en vez de hacer eso, lo pasamos a ``unit``, lo cual lo convierte a su representación necesaria:
 
-Excelente, ahora podemos inteligentemente componer las funciones
+```python
+>>> bind(bind(unit(4), sqrt), sqrt) 
+[1.4142135623730951, -1.4142135623730951]
+```
+
+Excelente, ahora podemos inteligentemente componer las funciones que tal vez devuelvan varios valores! Eso es básicamente la monad ``List`` de Haskell.
+
+## Ejemplo 3: depurar salida(9) (Alias "Escritor" / "Writer")
+
+Suponga que tenemos unas funciones ``u`` y ``v``, y ambas funciones toman un número y devuelven un número. No importa realmente cuáles funciones son, así que definamoslas como tal:
+
+```python
+def u(x): 
+  return x + 4 
+
+def v(x): 
+  return x * 2
+```
+
+No hay problema allí.  Aún podemos componerlas, así como ``u(v(x))``. ¿Qué pasaría si quisieramos imprimir información adicional junta con el valor normal que las funciones devuelven? Por ejemplo, suponga que quisieramos que cada funcion también devuelva una cadena de carácteres indicando que la función se ha llamado. Quizás modifiquemos ``u`` y ``v`` como tal:
+
+```python
+def verbose_u(x): 
+  return (x + 4, '[verbose_u was called on ' + str(x) + ']') 
+
+def verbose_v(x): 
+  return (x * 2, '[verbose_v was called on ' + str(x) + ']')
+```
+
+Ahora tenemos el mismo problema de antes, hemos perdido la habilidad de componer las funciones: ``verbose_u(verbose_v))``. Pero ahora sabemmos que la solución es ``bind``:
+
+```python
+def bind(x, f): 
+  result, output = f(x[0]) 
+  return (result, x[1] + output)
+```
