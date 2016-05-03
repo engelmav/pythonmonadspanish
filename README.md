@@ -1,3 +1,5 @@
+Source: https://www.stephanboyer.com/post/9/monads-part-1-a-design-pattern
+
 ADVERTENCIA: Todas las frases que contienen un numero en parentesis requiren que verifiquemos sus traducciones idiomaticas al español. Esta traduccion no es completa.
 
 # Monads(1), Parte 1: Un patrón de diseño(2)
